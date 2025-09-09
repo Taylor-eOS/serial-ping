@@ -15,20 +15,42 @@ def blink_green(n):
     for i in range(n):
         led[0] = (0, 255, 0)
         led.write()
-        time.sleep(0.2)
+        time.sleep(0.1)
         led[0] = (0, 0, 0)
         led.write()
-        time.sleep(0.2)
+        time.sleep(0.1)
+
+def blink_red(n):
+    for i in range(n):
+        led[0] = (255, 0, 0)
+        led.write()
+        time.sleep(0.1)
+        led[0] = (0, 0, 0)
+        led.write()
+        time.sleep(0.1)
+
+def blink_blue(n):
+    for i in range(n):
+        led[0] = (0, 0, 255)
+        led.write()
+        time.sleep(0.1)
+        led[0] = (0, 0, 0)
+        led.write()
+        time.sleep(0.1)
 
 last_status = time.time()
 while True:
     if uart.any():
         data = uart.read().strip()
         print('Received:', data.decode())
-        if data == b'test':
+        if data == b'1':
             blink_green(1)
+        elif data == b'2':
+            blink_red(1)
+        elif data == b'3':
+            blink_blue(1)
         last_status = time.time()
-    if time.time() - last_status > 10:
+    if time.time() - last_status > 5:
         print('No data received, waiting...')
         last_status = time.time()
-    time.sleep(0.05)
+    time.sleep(0.02)
